@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
+    <title>Forensic Builder // Profile Hub</title>
+    
+    <!-- Sophisticated Typography -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+
+    <style>
+        /* ==========================================================================
+           LUXURY DESIGN TOKENS
+           ========================================================================== */
+        :root {
+            --bone-white: #F8F8F6;
+            --charcoal: #111111;
+            --charcoal-light: rgba(17, 17, 17, 0.6);
+            --magenta: #D9005A;
+            --magenta-glow: rgba(217, 0, 90, 0.35);
+            
+            --spring: cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        *, *::before, *::after {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            background-color: var(--bone-white);
+            color: var(--charcoal);
+            font-family: 'Inter', system-ui, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        /* Ambient subtle grain to kill clinical flatness */
+        .noise-texture {
+            position: fixed;
+            inset: 0;
+            z-index: 0;
+            pointer-events: none;
+            opacity: 0.3;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)' opacity='0.15'/%3E%3C/svg%3E");
+        }
+
+        /* ==========================================================================
+           STRUCTURAL CONTAINER
+           ========================================================================== */
+        .hub-wrapper {
+            position: relative;
+            z-index: 10;
+            width: 100%;
+            max-width: 460px; /* Tight, premium constraint */
+            padding: 60px 24px;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        /* ==========================================================================
+           NUCLEUS (Profile & Branding)
+           ========================================================================== */
+        .identity-header {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            gap: 20px;
+        }
+
+        .nucleus {
+            position: relative;
+            display: inline-flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .nucleus-glow {
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            background: var(--magenta);
+            filter: blur(45px);
+            border-radius: 50%;
+            opacity: 0.45;
+            z-index: 0;
+            animation: pulseGlow 4s ease-in-out infinite alternate;
+        }
+
+        @keyframes pulseGlow {
+            0% { transform: scale(0.95); opacity: 0.3; }
+            100% { transform: scale(1.05); opacity: 0.55; }
+        }
+
+        .profile-ring {
+            position: relative;
+            width: 130px;
+            height: 130px;
+            border-radius: 50%;
+            border: 1px solid var(--charcoal); /* The rigid black line */
+            padding: 5px; /* The soft negative space */
+            background: var(--bone-white);
+            z-index: 1;
+        }
+
+        .profile-image {
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            object-fit: cover;
+            display: block;
+            background: #EAEAEA;
+        }
+
+        .brand-badge {
+            position: absolute;
+            bottom: -2px;
+            right: -2px;
+            width: 42px;
+            height: 42px;
+            border-radius: 50%;
+            background: var(--bone-white);
+            border: 1px solid var(--charcoal);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 3;
+            padding: 4px;
+        }
+
+        .brand-logo-inner {
+            width: 100%;
+            height: 100%;
+            background: var(--charcoal);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .logo-svg {
+            width: 16px;
+            height: 16px;
+            fill: none;
+            stroke: var(--bone-white);
+            stroke-width: 2.5;
+            stroke-linecap: round;
+            stroke-linejoin: round;
+        }
+
+        .identity-meta h1 {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.6rem;
+            font-weight: 600;
+            letter-spacing: -0.04em;
+            line-height: 1.1;
+            color: var(--charcoal);
+            margin-bottom: 6px;
+        }
+
+        .identity-meta p {
+            font-size: 0.95rem;
+            color: var(--charcoal-light);
+            font-weight: 400;
+            letter-spacing: -0.01em;
+        }
+
+        /* ==========================================================================
+           LINK ENGINE (Clip-Path Physics)
+           ========================================================================== */
+        .link-stack {
+            display: flex;
+            flex-direction: column;
+            gap: 14px;
+        }
+
+        .lux-link {
+            position: relative;
+            display: block;
+            width: 100%;
+            border-radius: 100px; /* Lux and round */
+            border: 1px solid var(--charcoal); /* Black lines */
+            background: var(--bone-white);
+            text-decoration: none;
+            box-shadow: 0 4px 12px rgba(0,0,0,0);
+            transition: box-shadow 0.4s var(--spring), transform 0.4s var(--spring);
+            -webkit-tap-highlight-color: transparent;
+            overflow: hidden;
+            /* Initial origin for mouse tracking */
+            --mouse-x: 50%;
+            --mouse-y: 50%;
+        }
+
+        /* Dual-layer architecture for flawless text inversion */
+        .lux-layer-default, .lux-layer-active {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px 28px;
+            border-radius: 100px;
+        }
+
+        .lux-layer-default {
+            color: var(--charcoal);
+        }
+
+        .lux-layer-active {
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--charcoal);
+            color: var(--bone-white);
+            /* The Savage Masking Effect */
+            clip-path: circle(0% at var(--mouse-x) var(--mouse-y));
+            transition: clip-path 0.5s var(--spring);
+            pointer-events: none; /* Let events pass to parent */
+        }
+
+        .link-text {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 1.1rem;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+        }
+
+        .link-icon {
+            width: 20px;
+            height: 20px;
+            transition: transform 0.4s var(--spring);
+        }
+
+        /* Hover States */
+        .lux-link:hover .lux-layer-active {
+            clip-path: circle(150% at var(--mouse-x) var(--mouse-y));
+        }
+
+        .lux-link:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 16px 32px -8px var(--magenta-glow);
+        }
+
+        .lux-link:hover .link-icon {
+            transform: translate(3px, -3px);
+        }
+
+        /* ==========================================================================
+           CINEMATIC ENTRANCE
+           ========================================================================== */
+        @keyframes slideUpFade {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .identity-header {
+            opacity: 0;
+            animation: slideUpFade 0.8s var(--spring) forwards 0.1s;
+        }
+
+        .lux-link {
+            opacity: 0;
+            animation: slideUpFade 0.8s var(--spring) forwards;
+        }
+
+    </style>
+</head>
+<body>
+
+    <div class="noise-texture"></div>
+
+    <main class="hub-wrapper">
+        
+        <!-- Identity Nucleus -->
+        <header class="identity-header">
+            <div class="nucleus">
+                <div class="nucleus-glow"></div>
+                <div class="profile-ring">
+                    <!-- Flawlessly mounted user asset -->
+                    <img src="image_436855.jpg" alt="Profile" class="profile-image" onerror="this.src='https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=400&auto=format&fit=crop'">
+                </div>
+                
+                <!-- Dedicated Logo Dock -->
+                <div class="brand-badge">
+                    <div class="brand-logo-inner">
+                        <!-- Replace internal SVG path with your specific logo vector -->
+                        <svg viewBox="0 0 24 24" class="logo-svg">
+                            <polygon points="12 3 3 21 21 21" />
+                        </svg>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="identity-meta">
+                <h1>Forensic Builder</h1>
+                <p>Production-Grade Logic. Absolute Discipline.</p>
+            </div>
+        </header>
+
+        <!-- The Engine (Links) -->
+        <nav class="link-stack" id="link-stack">
+            <!-- Link 01 -->
+            <a href="#" class="lux-link">
+                <div class="lux-layer-default">
+                    <span class="link-text">Work with Me</span>
+                    <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+                <div class="lux-layer-active">
+                    <span class="link-text">Work with Me</span>
+                    <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </a>
+            
+            <!-- Link 02 -->
+            <a href="#" class="lux-link">
+                <div class="lux-layer-default">
+                    <span class="link-text">Why I Do This</span>
+                    <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+                <div class="lux-layer-active">
+                    <span class="link-text">Why I Do This</span>
+                    <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </a>
+
+            <!-- Link 03 -->
+            <a href="#" class="lux-link">
+                <div class="lux-layer-default">
+                    <span class="link-text">Blog</span>
+                    <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+                <div class="lux-layer-active">
+                    <span class="link-text">Blog</span>
+                    <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </a>
+
+            <!-- Link 04 -->
+            <a href="#" class="lux-link">
+                <div class="lux-layer-default">
+                    <span class="link-text">Social Links</span>
+                    <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+                <div class="lux-layer-active">
+                    <span class="link-text">Social Links</span>
+                    <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </a>
+
+            <!-- Link 05 -->
+            <a href="#" class="lux-link">
+                <div class="lux-layer-default">
+                    <span class="link-text">Works In Progress</span>
+                    <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+                <div class="lux-layer-active">
+                    <span class="link-text">Works In Progress</span>
+                    <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </a>
+
+            <!-- Link 06 -->
+            <a href="#" class="lux-link">
+                <div class="lux-layer-default">
+                    <span class="link-text">Personal Gallery</span>
+                    <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+                <div class="lux-layer-active">
+                    <span class="link-text">Personal Gallery</span>
+                    <svg class="link-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+                </div>
+            </a>
+        </nav>
+
+    </main>
+
+    <script>
+        /**
+         * LAMBORGHINI LOGIC — Liquid Coordinate Tracking
+         * Tracks cursor injection points for flawless, un-buggy hover clipping.
+         */
+        class InteractionEngine {
+            constructor() {
+                this.links = document.querySelectorAll('.lux-link');
+                this.initStagger();
+                this.initLiquidHover();
+            }
+
+            // Staggers entrance animation dynamically
+            initStagger() {
+                this.links.forEach((link, i) => {
+                    link.style.animationDelay = `${0.25 + (i * 0.08)}s`;
+                });
+            }
+
+            // Maps X/Y coordinates to CSS custom variables for the clip-path origin
+            initLiquidHover() {
+                // Feature detection for touch devices to prevent sticky hover states
+                if (matchMedia('(hover: none)').matches) return;
+
+                this.links.forEach(link => {
+                    link.addEventListener('mousemove', (e) => {
+                        const rect = link.getBoundingClientRect();
+                        const x = e.clientX - rect.left;
+                        const y = e.clientY - rect.top;
+                        
+                        // Inject coordinates into CSS
+                        link.style.setProperty('--mouse-x', `${x}px`);
+                        link.style.setProperty('--mouse-y', `${y}px`);
+                    });
+                });
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            new InteractionEngine();
+        });
+    </script>
+</body>
+</html>
